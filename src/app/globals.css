@@ -122,10 +122,6 @@ button:active {
 }
 
 @media (min-width: 768px) and (max-width: 1439px) {
-  .hero-section {
-    height: 800px;
-  }
-
   .welcome-inner,
   .experience-card-inner,
   .discover-inner {
@@ -160,10 +156,6 @@ button:active {
 }
 
 @media (min-width: 1440px) {
-  .hero-section {
-    height: 900px;
-  }
-
   .hero-nav {
     right: auto;
     left: 50%;
@@ -190,15 +182,6 @@ button:active {
   .welcome-copy .outline-button {
     width: 158px;
     padding-inline: 0;
-  }
-
-  .hero-content {
-    right: auto;
-    left: 50%;
-    width: 1440px;
-    top: 380px;
-    translate: 0 0;
-    transform: translateX(-50%);
   }
 
   .hero-section > img {
