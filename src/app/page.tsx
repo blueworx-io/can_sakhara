@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ExperienceCarousel from "@/components/ExperienceCarousel";
 
 const features = [
   { value: "6061", unit: "m²", label: "Plot" },
@@ -7,60 +8,6 @@ const features = [
   { value: "16", label: "Sleeps" },
   { value: "7", label: "Bathrooms" },
   { value: "1", label: "Guest WC" },
-];
-
-const experiences = [
-  {
-    title: "An island original",
-    subtitle: (
-      <>
-        Can Sakhara is a magnet for non-conformists.
-        <br />
-        Innovators. Individuals. Much like the island herself
-      </>
-    ),
-    image: "/images/experience-1.png",
-    alt: "The white exterior of Can Sakhara framed by palm trees",
-    paragraphs: [
-      "From the highest house on the hill in Sa Carroca, the island below is yours. From shimmering Salinas salt-flats to Formentera, meandering boats drifting on the sparkling sea, and the patterns of the stars. A heavenly hideaway.",
-      "It’s a feeling to step into, an immersion into our art, culture and vibe — seamlessly intertwined into one home. This is where space transforms to ever-changing needs. An experience that morphs through the hours to become everything you want it to be and more. Join us for a new chapter.",
-      "Your ultimate island home.",
-    ],
-  },
-  {
-    title: "Boldly beautiful",
-    subtitle: (
-      <>
-        So much more than a conventional luxury villa rental.
-        <br />
-        Tune-in to your personal Ibiza experience, unique in every way
-      </>
-    ),
-    image: "/images/experience-2.png",
-    alt: "The sculptural timber entrance to Can Sakhara",
-    paragraphs: [
-      "True sanctuary begins with space. Space to rest, to play, to revive.",
-      "Wrapped by lush gardens and terraces, the house unfolds from the moment you step in. Greeted by a statement staircase and triple-height ceilings into an open living space, straight into our world of art and colour.",
-      "Can Sakhara features a stunning Primary Suite and seven additional individually designed bedrooms, sleeping up to 16 guests.",
-    ],
-  },
-  {
-    title: "Heart of a home",
-    subtitle: (
-      <>
-        Just as our changing moods shape how we use a space,
-        <br />
-        so Can Sakhara shifts alongside us to match the tempo
-      </>
-    ),
-    image: "/images/experience-3.png",
-    alt: "An art-filled lounge inside Can Sakhara",
-    paragraphs: [
-      "Iconic contemporary furniture and tactile fabrics. Tongue in cheek touches. A vintage jukebox. Eames lounge chairs. Limited edition disco ball sculptures.",
-      "Discover the pulse of our place in bronze, travertine, smoked mirror glass, curated art and installations handpicked from artists across the globe.",
-      "Rich, calm, beautiful, and bold.",
-    ],
-  },
 ];
 
 function MenuIcon() {
@@ -307,43 +254,7 @@ export default function Home() {
         <SectionLine className="welcome-line-bottom" />
       </section>
 
-      <section id="experience" className="experience-section relative overflow-hidden bg-[#f2ebe2] py-28 md:py-0">
-        <div className="experience-scroll flex snap-x snap-mandatory gap-8 overflow-x-auto md:gap-0">
-          {experiences.map((experience) => (
-            <article
-              key={experience.title}
-              className="experience-card max-w-full basis-full shrink-0 snap-center"
-            >
-              <div className="experience-card-inner px-6 md:px-0">
-                <SectionHeading
-                  className="experience-heading"
-                  eyebrow="Experience"
-                  title={experience.title}
-                  subtitle={experience.subtitle}
-                />
-                <div className="experience-layout mx-auto mt-20 grid max-w-6xl items-center gap-12 min-[1440px]:mt-0 min-[1440px]:grid-cols-[652px_304px] min-[1440px]:gap-[90px]">
-                  <div className="experience-image relative aspect-[1.3/1] overflow-hidden">
-                    <Image
-                      src={experience.image}
-                      alt={experience.alt}
-                      fill
-                      sizes="(max-width: 768px) 90vw, 55vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="experience-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words font-body text-[15px] font-light leading-[1.6] tracking-[0.05em] min-[1440px]:max-w-none min-[1440px]:text-[16px]">
-                    {experience.paragraphs.map((paragraph) => (
-                      <p key={paragraph} className="mt-6 first:mt-0">
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ExperienceCarousel />
 
       <section id="discover" className="discover-section relative bg-white">
         <SectionLine className="discover-line-top" />

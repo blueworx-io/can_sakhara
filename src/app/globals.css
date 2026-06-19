@@ -67,15 +67,27 @@ button:active {
   color: white;
 }
 
-.experience-scroll {
+.experience-viewport {
   width: 100%;
   max-width: 100vw;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
+  overflow: hidden;
+  touch-action: pan-y;
 }
 
-.experience-scroll::-webkit-scrollbar {
-  display: none;
+.experience-track {
+  display: flex;
+  width: 100%;
+  will-change: transform;
+  /* Mobile/tablet: each slide fills the viewport, so step one full width per
+     index. Desktop overrides this to reveal a peek of the next slide. */
+  transform: translateX(
+    calc(var(--carousel-i, 0) * -100% + var(--carousel-drag, 0px))
+  );
+}
+
+.experience-slide {
+  flex: 0 0 100%;
+  width: 100%;
 }
 
 @media (min-width: 768px) and (max-width: 1439px) {
@@ -93,10 +105,6 @@ button:active {
   .map-frame {
     width: 620px;
     height: 500px;
-  }
-
-  .experience-card {
-    flex-basis: 768px;
   }
 
   .experience-image {
@@ -324,34 +332,39 @@ button:active {
     transform: translateX(-50%);
   }
 
-  .experience-section {
+  .experience-section,
+  .experience-viewport,
+  .experience-slide {
     height: 1230px;
   }
 
-  .experience-scroll {
-    height: 1230px;
-    margin-left: max(0px, calc((100vw - 1440px) / 2));
-    gap: 0;
+  /* Slides advance by the Figma 1140px pitch (1064px heading + surrounding
+     gap) inside the 1440px frame, leaving ~100px of the neighbouring slides
+     visible on each side. The active slide is centred in the viewport. */
+  .experience-slide {
+    flex: 0 0 1140px;
+    width: 1140px;
   }
 
-  .experience-card {
-    position: relative;
-    flex: 0 0 1136px;
-    width: 1136px;
-    height: 1230px;
-    max-width: none;
+  .experience-track {
+    transform: translateX(
+      calc(
+        (100vw - 1140px) / 2 - var(--carousel-i, 0) * 1140px +
+          var(--carousel-drag, 0px)
+      )
+    );
   }
 
   .experience-card-inner {
-    width: 1136px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
     height: 1230px;
-    padding: 0;
+    padding: 179px 0 0;
   }
 
   .experience-heading {
-    position: absolute;
-    top: 179px;
-    left: 188px;
     width: 1064px;
     max-width: none;
   }
@@ -362,12 +375,9 @@ button:active {
   }
 
   .experience-layout {
-    position: absolute;
-    top: 545px;
-    left: 188px;
     width: 1046px;
     height: 500px;
-    margin: 0;
+    margin-top: 96px;
   }
 
   .experience-image {
@@ -510,10 +520,6 @@ button:active {
     height: 275px;
   }
 
-  .experience-card {
-    flex-basis: 390px;
-  }
-
   .experience-image {
     width: 340px;
     height: 262px;
@@ -544,12 +550,6 @@ button:active {
   }
 }
 
-@media (min-width: 480px) and (max-width: 767px) {
-  .experience-card {
-    flex-basis: 500px;
-  }
-}
-
 @media (max-width: 374px) {
   .welcome-inner,
   .experience-card-inner,
@@ -560,10 +560,6 @@ button:active {
   .discover-grid,
   .discover-card {
     width: 320px;
-  }
-
-  .experience-card {
-    flex-basis: 360px;
   }
 }
 
