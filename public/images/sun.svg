@@ -1,0 +1,18 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Layer_1" clip-path="url(#clip0_0_35)">
+<path id="Vector" d="M90 134.182C114.401 134.182 134.182 114.401 134.182 90C134.182 65.5991 114.401 45.8182 90 45.8182C65.5991 45.8182 45.8182 65.5991 45.8182 90C45.8182 114.401 65.5991 134.182 90 134.182Z" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_2" d="M159.031 89.994H180" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_3" d="M0 89.994H20.9691" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_4" d="M89.994 159.031V180" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_5" d="M89.994 0V20.9691" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_6" d="M138.814 41.1855L153.642 26.3578" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_7" d="M26.3578 153.642L41.1855 138.814" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_8" d="M41.1855 41.1855L26.3578 26.3578" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+<path id="Vector_9" d="M153.642 153.642L138.814 138.814" stroke="var(--stroke-0, white)" stroke-width="2" stroke-miterlimit="10"/>
+</g>
+<defs>
+<clipPath id="clip0_0_35">
+<rect width="180" height="180" fill="white"/>
+</clipPath>
+</defs>
+</svg>

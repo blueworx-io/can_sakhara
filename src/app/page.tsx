@@ -1,65 +1,432 @@
 import Image from "next/image";
 
+const features = [
+  { value: "6061", unit: "m²", label: "Plot" },
+  { value: "1261", unit: "m²", label: "House" },
+  { value: "8", label: "Bedrooms" },
+  { value: "16", label: "Sleeps" },
+  { value: "7", label: "Bathrooms" },
+  { value: "1", label: "Guest WC" },
+];
+
+const experiences = [
+  {
+    title: "An island original",
+    subtitle: (
+      <>
+        Can Sakhara is a magnet for non-conformists.
+        <br />
+        Innovators. Individuals. Much like the island herself
+      </>
+    ),
+    image: "/images/experience-1.png",
+    alt: "The white exterior of Can Sakhara framed by palm trees",
+    paragraphs: [
+      "From the highest house on the hill in Sa Carroca, the island below is yours. From shimmering Salinas salt-flats to Formentera, meandering boats drifting on the sparkling sea, and the patterns of the stars. A heavenly hideaway.",
+      "It’s a feeling to step into, an immersion into our art, culture and vibe — seamlessly intertwined into one home. This is where space transforms to ever-changing needs. An experience that morphs through the hours to become everything you want it to be and more. Join us for a new chapter.",
+      "Your ultimate island home.",
+    ],
+  },
+  {
+    title: "Boldly beautiful",
+    subtitle: (
+      <>
+        So much more than a conventional luxury villa rental.
+        <br />
+        Tune-in to your personal Ibiza experience, unique in every way
+      </>
+    ),
+    image: "/images/experience-2.png",
+    alt: "The sculptural timber entrance to Can Sakhara",
+    paragraphs: [
+      "True sanctuary begins with space. Space to rest, to play, to revive.",
+      "Wrapped by lush gardens and terraces, the house unfolds from the moment you step in. Greeted by a statement staircase and triple-height ceilings into an open living space, straight into our world of art and colour.",
+      "Can Sakhara features a stunning Primary Suite and seven additional individually designed bedrooms, sleeping up to 16 guests.",
+    ],
+  },
+  {
+    title: "Heart of a home",
+    subtitle: (
+      <>
+        Just as our changing moods shape how we use a space,
+        <br />
+        so Can Sakhara shifts alongside us to match the tempo
+      </>
+    ),
+    image: "/images/experience-3.png",
+    alt: "An art-filled lounge inside Can Sakhara",
+    paragraphs: [
+      "Iconic contemporary furniture and tactile fabrics. Tongue in cheek touches. A vintage jukebox. Eames lounge chairs. Limited edition disco ball sculptures.",
+      "Discover the pulse of our place in bronze, travertine, smoked mirror glass, curated art and installations handpicked from artists across the globe.",
+      "Rich, calm, beautiful, and bold.",
+    ],
+  },
+];
+
+function MenuIcon() {
+  return (
+    <span aria-hidden="true" className="flex w-12 flex-col gap-2">
+      <span className="h-px w-full bg-current" />
+      <span className="h-px w-full bg-current" />
+    </span>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="size-4 fill-none stroke-current"
+      strokeWidth="1.5"
+    >
+      <path d="M7.2 3.8 9.4 8 7.8 9.7c1.3 2.7 3.7 5.1 6.4 6.5l1.8-1.6 4.1 2.2-.8 3.2c-.2.8-.9 1.3-1.7 1.3C9.4 20.7 3.3 14.6 2.7 6.4c0-.8.5-1.5 1.3-1.7l3.2-.9Z" />
+    </svg>
+  );
+}
+
+function BrandMark() {
+  return (
+    <Image
+      src="/images/logo-white.svg"
+      alt="Can Sakhara"
+      width={52}
+      height={52}
+    />
+  );
+}
+
+function OutlineButton({
+  children,
+  href,
+  icon = false,
+  className = "",
+}: {
+  children: React.ReactNode;
+  href: string;
+  icon?: boolean;
+  className?: string;
+}) {
+  return (
+    <a
+      href={href}
+      className={`outline-button inline-flex h-[54px] items-center justify-center gap-4 whitespace-nowrap border border-current px-8 font-display text-[14px] uppercase tracking-[0.4em] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${className}`}
+    >
+      {icon && <PhoneIcon />}
+      <span>{children}</span>
+    </a>
+  );
+}
+
+function SectionLine({ className = "" }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`section-line mx-auto block h-28 w-px bg-[#42071a] md:h-40 md:w-[2px] ${className}`}
+    />
+  );
+}
+
+function SectionHeading({
+  eyebrow,
+  title,
+  subtitle,
+  className = "",
+}: {
+  eyebrow: string;
+  title: React.ReactNode;
+  subtitle: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <header
+      className={`section-heading mx-auto w-full min-w-0 max-w-5xl text-center text-[#42081a] ${className}`}
+    >
+      <p className="section-eyebrow font-display text-sm uppercase tracking-[0.34em] md:text-[21px]">
+        {eyebrow}
+      </p>
+      <h2 className="section-title mx-auto mt-9 max-w-full break-words font-display text-[22px] font-light uppercase leading-[1.3] tracking-[0.1em] md:text-5xl md:leading-none md:tracking-[0.2em]">
+        {title}
+      </h2>
+      <p className="section-subtitle mx-auto mt-8 max-w-[calc(100vw-3rem)] break-words font-serif text-[17px] font-light italic leading-[1.8] tracking-[0.02em] md:mt-10 md:max-w-4xl md:text-[28px] md:tracking-[0.1em]">
+        {subtitle}
+      </p>
+    </header>
+  );
+}
+
+function SunIcon() {
+  return (
+    <Image src="/images/sun.svg" alt="" width={180} height={180} />
+  );
+}
+
+function MoonIcon() {
+  return (
+    <Image src="/images/moon.svg" alt="" width={180} height={180} />
+  );
+}
+
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-white text-[#42081a]">
+      <section className="hero-section relative h-[700px] md:h-[900px]">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/images/hero.png"
+          alt="Can Sakhara villa in the hills of Ibiza"
+          fill
           priority
+          sizes="100vw"
+          className="object-cover object-center"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+        <div className="absolute inset-0 bg-black/20" />
+
+        <nav className="hero-nav absolute inset-x-0 top-0 z-10 grid h-28 grid-cols-[1fr_auto_1fr] items-center px-6 text-white md:h-[131px] md:px-20">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#welcome"
+            className="flex items-center gap-5 justify-self-start font-display text-[11px] uppercase tracking-[0.42em] md:gap-6 md:text-sm"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+            <MenuIcon />
+            <span className="hidden sm:inline">Menu</span>
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+          <a href="#" aria-label="Can Sakhara home" className="justify-self-center">
+            <BrandMark />
+          </a>
+          <div className="hidden justify-self-end sm:block">
+            <OutlineButton
+              href="mailto:reservations@cansakhara.com"
+              className="hover:text-[#500d20]"
+            >
+              Enquire
+            </OutlineButton>
+          </div>
+        </nav>
+
+        <div className="hero-content absolute inset-x-5 top-[43%] z-10 -translate-y-1/2 text-center text-white">
+          <h1 className="sr-only">Can Sakhara</h1>
+          <Image
+            src="/images/hero-wordmark.svg"
+            alt=""
+            width={655}
+            height={50}
+            className="hero-wordmark mx-auto h-auto w-[300px] sm:w-[520px] md:w-[655px]"
+          />
+          <div className="hero-actions mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="#discover"
+              className="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#ac9a8c] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+            >
+              By day
+            </a>
+            <a
+              href="#discover"
+              className="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#001c2b] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#001c2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+            >
+              By night
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="welcome" className="welcome-section relative bg-white">
+        <SectionLine className="welcome-line-top relative z-10 -mt-6" />
+        <div className="welcome-inner px-6 pb-24 pt-16 md:px-16 md:pb-40">
+          <SectionHeading
+            className="welcome-heading"
+            eyebrow="Welcome"
+            title={
+              <>
+                <span className="block tracking-[0.066em]">Introducing</span>
+                <span className="block">Can Sakhara</span>
+              </>
+            }
+            subtitle="Ibiza beckons. An iconic home, reimagined. A view like no other"
+          />
+
+          <div className="welcome-content mx-auto mt-24 grid min-w-0 max-w-6xl items-center gap-14 min-[1440px]:mt-0 min-[1440px]:grid-cols-[666px_346px] min-[1440px]:gap-[90px]">
+            <div className="map-frame relative mx-auto aspect-[1.24/1] w-full max-w-[620px]">
+              <div className="map-art relative size-full">
+                <Image
+                  src="/images/ibiza-map.svg"
+                  alt="Map of Ibiza showing the location of Can Sakhara"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 495px"
+                  className="object-contain"
+                />
+              </div>
+            </div>
+            <div className="welcome-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words font-body text-[15px] font-light leading-[1.75] tracking-[0.04em] min-[1440px]:max-w-none min-[1440px]:text-base">
+              <p>
+                Every so often the White Isle opens up to reveal one of her
+                hidden gems, instantly challenging clichéd notions of the
+                ‘real’ Ibiza.
+              </p>
+              <p className="mt-7">Welcome to Can Sakhara.</p>
+              <p className="mt-7">
+                Be the first to experience utmost privacy, coupled with
+                absolute glamour. Colour for miles, amidst your own cinematic
+                landscape. A hillside setting near to beach clubs, superclubs,
+                and the island’s best restaurants, yet always tucked away.
+                There for the taking or just the observing.
+              </p>
+              <p className="mt-7">
+                Balearic rock ‘n roll, with a fine art heart.
+              </p>
+              <OutlineButton
+                href="mailto:reservations@cansakhara.com"
+                className="mt-10 hover:bg-[#42081a] hover:text-white"
+              >
+                Enquire
+              </OutlineButton>
+            </div>
+          </div>
+
+          <div className="features-block mx-auto mt-24 max-w-4xl md:mt-32">
+            <h3 className="features-title text-center font-display text-lg uppercase tracking-[0.32em]">
+              Featuring
+            </h3>
+            <div className="features-grid mt-12 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 md:grid-cols-6">
+              {features.map((feature) => (
+                <div key={feature.label} className="text-center">
+                  <div className="feature-circle mx-auto flex size-16 flex-col items-center justify-center rounded-full bg-[#f2ebe2]">
+                    <span className="font-serif text-xl leading-none">
+                      {feature.value}
+                    </span>
+                    {feature.unit && (
+                      <span className="mt-1 text-[9px]">{feature.unit}</span>
+                    )}
+                  </div>
+                  <p className="mt-5 font-body text-[11px] uppercase tracking-[0.18em]">
+                    {feature.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <SectionLine className="welcome-line-bottom" />
+      </section>
+
+      <section id="experience" className="experience-section relative overflow-hidden bg-[#f2ebe2] py-28 md:py-0">
+        <div className="experience-scroll flex snap-x snap-mandatory gap-8 overflow-x-auto md:gap-0">
+          {experiences.map((experience) => (
+            <article
+              key={experience.title}
+              className="experience-card max-w-full basis-full shrink-0 snap-center"
+            >
+              <div className="experience-card-inner px-6 md:px-0">
+                <SectionHeading
+                  className="experience-heading"
+                  eyebrow="Experience"
+                  title={experience.title}
+                  subtitle={experience.subtitle}
+                />
+                <div className="experience-layout mx-auto mt-20 grid max-w-6xl items-center gap-12 min-[1440px]:mt-0 min-[1440px]:grid-cols-[652px_304px] min-[1440px]:gap-[90px]">
+                  <div className="experience-image relative aspect-[1.3/1] overflow-hidden">
+                    <Image
+                      src={experience.image}
+                      alt={experience.alt}
+                      fill
+                      sizes="(max-width: 768px) 90vw, 55vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="experience-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words font-body text-[15px] font-light leading-[1.6] tracking-[0.05em] min-[1440px]:max-w-none min-[1440px]:text-[16px]">
+                    {experience.paragraphs.map((paragraph) => (
+                      <p key={paragraph} className="mt-6 first:mt-0">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="discover" className="discover-section relative bg-white">
+        <SectionLine className="discover-line-top" />
+        <div className="discover-inner px-6 pb-28 pt-24 md:px-16 md:pb-0">
+          <h2 className="discover-title text-center font-display text-lg uppercase tracking-[0.34em]">
+            Discover
+          </h2>
+          <div className="discover-grid mx-auto mt-20 grid max-w-[1170px] gap-8 min-[1440px]:grid-cols-[550px_550px] min-[1440px]:gap-[70px]">
+            <article className="discover-card flex aspect-square flex-col items-center justify-center bg-[#ac9a8c] px-6 text-center text-white">
+              <SunIcon />
+              <h3 className="discover-card-title mt-[50px] font-display text-4xl font-light uppercase tracking-[0.4em] md:text-5xl">
+                By day
+              </h3>
+              <OutlineButton
+                href="#experience"
+                className="mt-[50px] border-white hover:bg-white hover:text-[#ac9a8c]"
+              >
+                Explore
+              </OutlineButton>
+            </article>
+            <article className="discover-card flex aspect-square flex-col items-center justify-center bg-[#031927] px-6 text-center text-white">
+              <MoonIcon />
+              <h3 className="discover-card-title mt-[50px] font-display text-4xl font-light uppercase tracking-[0.4em] md:text-5xl">
+                By night
+              </h3>
+              <OutlineButton
+                href="#experience"
+                className="mt-[50px] border-white bg-[#286b7e] hover:bg-white hover:text-[#001c2b]"
+              >
+                Explore
+              </OutlineButton>
+            </article>
+          </div>
+        </div>
+        <SectionLine className="discover-line-bottom" />
+      </section>
+
+      <section className="video-section relative h-[430px] md:h-[600px]">
+        <Image
+          src="/images/video-cover.png"
+          alt="Panoramic view from Can Sakhara over Ibiza"
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/10" />
+        <button
+          type="button"
+          aria-label="Play Can Sakhara film"
+          className="absolute left-1/2 top-1/2 size-24 -translate-x-1/2 -translate-y-1/2 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:size-[170px]"
+        >
+          <Image src="/images/play.svg" alt="" fill sizes="170px" />
+        </button>
+      </section>
+
+      <footer
+        id="contact"
+        className="site-footer relative flex min-h-[760px] flex-col bg-[#492735] px-6 py-24 text-white md:h-[932px] md:min-h-0 md:px-20 md:py-0"
+      >
+        <div className="footer-parent-logo relative mx-auto h-[86px] w-[259px]">
+          <Image src="/images/mel-de-magranetes.svg" alt="Mel de Magranetes" fill />
+        </div>
+
+        <div className="footer-brands mx-auto mt-20 grid w-full max-w-3xl gap-16 text-center sm:grid-cols-2 md:mt-0">
+          <a href="#" className="relative mx-auto block h-[75px] w-[223px]">
+            <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
+          </a>
+          <a href="#" className="relative mx-auto block h-[75px] w-[223px]">
+            <Image src="/images/can-ergah.svg" alt="Can Ergâh" fill />
           </a>
         </div>
-      </main>
-    </div>
+
+        <div className="footer-bottom mt-auto border-t border-white/70 pt-10 font-body text-[11px] uppercase tracking-[0.22em]">
+          <div className="flex flex-col gap-7 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+            <p>© 2026 Mel de Magranetes SL</p>
+            <nav className="flex justify-center gap-7 sm:justify-end">
+              <a href="#">Terms</a>
+              <a href="#">Cookies</a>
+              <a href="#">Privacy</a>
+            </nav>
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 }
