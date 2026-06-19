@@ -67,6 +67,37 @@ button:active {
   color: white;
 }
 
+/* "Introducing / Can Sakhara" lockup. The two lines fill the exact Figma title
+   box width so they render at an identical width (272px @ 30px on mobile,
+   435px @ 48px from the tablet breakpoint up). letter-spacing is neutralised so
+   the even gaps come purely from the per-letter justify-between distribution. */
+.welcome-lockup {
+  width: 272px;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: normal;
+}
+
+.welcome-lockup-line {
+  letter-spacing: normal;
+}
+
+@media (min-width: 768px) {
+  .welcome-lockup {
+    width: 435px;
+    font-size: 48px;
+  }
+}
+
+/* The eyebrow is centre-aligned, but its letter-spacing adds a trailing gap
+   after the final letter. With text-align:center that gap is counted, nudging
+   the visible word left of the centred section line above it. Indenting by the
+   letter-spacing (em-based, so it tracks the 14px/21px sizes) recentres the
+   glyphs over the line. */
+.welcome-heading .section-eyebrow {
+  text-indent: 0.34em;
+}
+
 .experience-viewport {
   width: 100%;
   max-width: 100vw;
@@ -193,24 +224,29 @@ button:active {
     height: 54px;
   }
 
+  /* Flow layout: the section is a centred flex column so the lines, heading,
+     map/copy and features all share one centre axis by construction. Vertical
+     placement comes from padding/margins (the Figma gaps), not absolute tops. */
   .welcome-section {
-    height: 1421px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
+  /* Bleeds 81px up into the hero above (was top: -81px). */
   .welcome-line-top {
-    position: absolute;
-    top: -81px;
-    left: 50%;
-    margin: 0;
-    transform: translateX(-50%);
+    margin-top: -81px;
   }
 
   .welcome-inner {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 1440px;
-    height: 1421px;
     margin-inline: auto;
-    padding: 0;
+    /* line-top bottom sits 79px below section top; +75 lands the heading at the
+       Figma top of 154px. */
+    padding-top: 75px;
   }
 
   .section-heading {
@@ -235,7 +271,7 @@ button:active {
   .section-heading .section-title {
     font-size: 48px;
     line-height: 1;
-    letter-spacing: 7.6px;
+    letter-spacing: 9.6px;
   }
 
   .section-heading .section-subtitle {
@@ -243,13 +279,10 @@ button:active {
     max-width: none;
     font-size: 28px;
     line-height: 1.8;
-    letter-spacing: 2.4px;
+    letter-spacing: 2.8px;
   }
 
   .welcome-heading {
-    position: absolute;
-    top: 154px;
-    left: 188px;
     width: 1064px;
   }
 
@@ -257,26 +290,33 @@ button:active {
     height: 96px;
   }
 
-  .welcome-content {
-    position: absolute;
-    top: 431px;
-    left: 80px;
-    width: 1102px;
-    height: 600px;
-    margin: 0;
+  /* Desktop swaps the eyebrow tracking to a fixed 4.2px, so match the indent. */
+  .welcome-heading .section-eyebrow {
+    text-indent: 4.2px;
   }
 
+  /* Gap from heading bottom (≈421px) to the Figma content top of 431px. */
+  .welcome-content {
+    width: 1102px;
+    height: 600px;
+    margin-top: 10px;
+  }
+
+  /* Place the 495×400 map art inside the 666×600 frame via flow: vertically
+     centred (was top: 100px), 141px in from the left (was left: 141px). */
   .map-frame {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     width: 666px;
     height: 600px;
     max-width: none;
+    padding-left: 141px;
     aspect-ratio: auto;
   }
 
   .map-art {
-    position: absolute;
-    top: 100px;
-    left: 141px;
+    position: relative;
     width: 495px;
     height: 400px;
   }
@@ -288,12 +328,10 @@ button:active {
     letter-spacing: 0.8px;
   }
 
+  /* Gap from content bottom (1031px) to the Figma features top of 1066px. */
   .features-block {
-    position: absolute;
-    top: 1066px;
-    left: 355px;
     width: 727px;
-    margin: 0;
+    margin-top: 35px;
   }
 
   .features-title {
@@ -323,13 +361,13 @@ button:active {
     white-space: nowrap;
   }
 
+  /* Gap from features bottom (1235px) to the Figma line top of 1341px; the
+     negative bottom margin keeps the section box at 1421px so the line bleeds
+     80px down into the Experience section below (was top: 1341px). */
   .welcome-line-bottom {
-    position: absolute;
     z-index: 2;
-    top: 1341px;
-    left: 50%;
-    margin: 0;
-    transform: translateX(-50%);
+    margin-top: 106px;
+    margin-bottom: -80px;
   }
 
   .experience-section,
@@ -400,42 +438,37 @@ button:active {
   }
 
   .discover-section {
-    height: 1112px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
+  /* Bleeds 80px up into the Experience section above (was top: -80px). */
   .discover-line-top {
-    position: absolute;
     z-index: 2;
-    top: -80px;
-    left: 50%;
-    margin: 0;
-    transform: translateX(-50%);
+    margin-top: -80px;
   }
 
   .discover-inner {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 1440px;
-    height: 1112px;
     margin-inline: auto;
-    padding: 0;
+    /* line-top bottom sits 80px below section top; +70 lands the title at 150px. */
+    padding-top: 70px;
   }
 
   .discover-title {
-    position: absolute;
-    top: 150px;
-    left: 0;
-    width: 1440px;
     font-size: 21px;
     line-height: 1;
     letter-spacing: 4.2px;
   }
 
+  /* Gap from title bottom (171px) to the Figma grid top of 252px. */
   .discover-grid {
-    position: absolute;
-    top: 252px;
-    left: 135px;
     width: 1170px;
-    margin: 0;
+    margin-top: 81px;
   }
 
   .discover-card {
@@ -455,13 +488,13 @@ button:active {
     padding-inline: 0;
   }
 
+  /* Gap from grid bottom (860px) to the Figma line top of 1032px; the negative
+     bottom margin keeps the section box at 1112px so the line bleeds 80px down
+     into the video section below (was top: 1032px). */
   .discover-line-bottom {
-    position: absolute;
     z-index: 2;
-    top: 1032px;
-    left: 50%;
-    margin: 0;
-    transform: translateX(-50%);
+    margin-top: 172px;
+    margin-bottom: -80px;
   }
 
   .video-section {
@@ -469,36 +502,29 @@ button:active {
     border-bottom: 2px solid white;
   }
 
+  /* The footer is already a flex column; flow the children with margins.
+     padding-top lands the parent logo at the Figma top of 164px. */
   .site-footer {
     height: 858px;
+    padding-top: 164px;
     background: #422833;
   }
 
-  .footer-parent-logo {
-    position: absolute;
-    top: 164px;
-    left: 50%;
-    margin: 0;
-    transform: translateX(-50%);
-  }
-
+  /* Gap from logo bottom (250px) to the Figma brands top of 332px. */
   .footer-brands {
-    position: absolute;
-    top: 332px;
-    left: calc(50% - 336px);
     width: 672px;
     max-width: none;
+    margin-top: 82px;
     grid-template-columns: 223px 223px;
     justify-content: space-between;
     gap: 0;
   }
 
+  /* Gap from brands bottom (407px) to the Figma footer-bottom top of 710px. */
   .footer-bottom {
-    position: absolute;
-    top: 710px;
-    right: calc(50% - 640px);
-    left: calc(50% - 640px);
-    margin: 0;
+    width: 1280px;
+    margin-top: 303px;
+    margin-inline: auto;
     padding-top: 43px;
   }
 
