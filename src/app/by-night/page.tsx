@@ -134,8 +134,8 @@ export default function ByNight() {
 
       {/* Gallery — three images. Desktop: a fixed 1440 row. Mobile: a
           snap-scrolling peek carousel (278px slides, centred). */}
-      <section className="w-full bg-[#000e16] py-[20px] md:py-[30px]">
-        <div className="flex snap-x snap-mandatory gap-[19px] overflow-x-auto px-[calc((100vw-278px)/2)] [-ms-overflow-style:none] [scrollbar-width:none] md:mx-auto md:w-[1440px] md:snap-none md:justify-between md:gap-0 md:overflow-x-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+      <section className="w-full bg-[#000e16] py-[20px] md:flex md:justify-center md:py-[30px]">
+        <div className="flex snap-x snap-mandatory gap-[19px] overflow-x-auto px-[calc((100vw-278px)/2)] [-ms-overflow-style:none] [scrollbar-width:none] md:w-[1440px] md:shrink-0 md:snap-none md:justify-between md:gap-0 md:overflow-x-visible md:px-0 [&::-webkit-scrollbar]:hidden">
           {galleryImages.map((image) => (
             <div
               key={image.src}
