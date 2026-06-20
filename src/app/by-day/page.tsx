@@ -55,15 +55,15 @@ export default function ByDay() {
   return (
     <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-white text-white">
       {/* Hero — flat By Day taupe, transparent navbar over it */}
-      <section className="relative flex h-screen w-full flex-col items-center bg-[#ac9a8c]">
+      <section className="relative flex h-screen w-full flex-col items-center justify-center bg-[#ac9a8c]">
         <SiteHeader theme="day" />
 
         <span
           aria-hidden="true"
-          className="mt-[118px] h-px w-[362px] bg-white md:mt-[131px] md:w-[1280px]"
+          className="absolute inset-x-0 top-[118px] mx-auto h-px w-[362px] bg-white md:top-[131px] md:w-[1280px]"
         />
 
-        <div className="mt-[110px] flex w-full flex-col items-center gap-[30px] md:mt-[172px] md:w-[1064px] md:gap-[60px]">
+        <div className="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[60px]">
           <Image
             src="/images/sun.svg"
             alt=""
@@ -71,7 +71,7 @@ export default function ByDay() {
             height={110}
             className="size-20 md:size-[110px]"
           />
-          <h1 className="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[8.5px] md:text-[56px] md:tracking-[28px] md:indent-[14px]">
+          <h1 className="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[17px] md:text-[56px] md:tracking-[28px] md:indent-[28px]">
             By Day
           </h1>
           <Image

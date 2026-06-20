@@ -55,15 +55,15 @@ export default function ByNight() {
   return (
     <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-[#000e16] text-white">
       {/* Hero — flat By Night navy, transparent navbar over it */}
-      <section className="relative flex h-screen w-full flex-col items-center bg-[#031927]">
+      <section className="relative flex h-screen w-full flex-col items-center justify-center bg-[#031927]">
         <SiteHeader theme="night" />
 
         <span
           aria-hidden="true"
-          className="mt-[118px] h-px w-[362px] bg-white md:mt-[131px] md:w-[1280px]"
+          className="absolute inset-x-0 top-[118px] mx-auto h-px w-[362px] bg-white md:top-[131px] md:w-[1280px]"
         />
 
-        <div className="mt-[110px] flex w-full flex-col items-center gap-[30px] md:mt-[172px] md:w-[1064px] md:gap-[60px]">
+        <div className="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[60px]">
           <Image
             src="/images/moon.svg"
             alt=""
@@ -71,7 +71,7 @@ export default function ByNight() {
             height={110}
             className="size-20 md:size-[110px]"
           />
-          <h1 className="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[8.5px] md:text-[56px] md:tracking-[28px] md:indent-[14px]">
+          <h1 className="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[17px] md:text-[56px] md:tracking-[28px] md:indent-[28px]">
             By Night
           </h1>
           <Image
