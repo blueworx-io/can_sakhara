@@ -61,7 +61,7 @@ export default function ByNight() {
             By Night
           </h1>
           <Image
-            src="/images/hero-wordmark.svg"
+            src="/images/hero-wordmark-night.svg"
             alt="Can Sakhara"
             width={262}
             height={20}
