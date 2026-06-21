@@ -61,7 +61,7 @@ export default function ByDay() {
             By Day
           </h1>
           <Image
-            src="/images/hero-wordmark.svg"
+            src="/images/hero-wordmark-day.svg"
             alt="Can Sakhara"
             width={262}
             height={20}
