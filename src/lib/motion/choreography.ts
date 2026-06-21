@@ -54,7 +54,48 @@ export function buildHomeHero(shell: HTMLElement): void {
 
 // Below-the-fold scroll/text reveals. Runs after webfonts settle.
 export function buildHomeScroll(shell: HTMLElement): void {
-  void shell;
+  // --- Welcome ---
+  const wTop = one(shell, ".welcome-line-top");
+  if (wTop) drawLine(wTop, "y");
+
+  const wEyebrow = one(shell, ".welcome-heading .section-eyebrow");
+  if (wEyebrow) fadeUp(wEyebrow);
+
+  // Brand lockup: reveal the EXISTING per-char spans (justify layout untouched).
+  const lockupChars = $(shell, ".welcome-lockup-line > span");
+  if (lockupChars.length) {
+    revealExistingChars(lockupChars, {
+      trigger: one(shell, ".welcome-lockup") ?? lockupChars[0],
+    });
+  }
+
+  const wSubtitle = one(shell, ".welcome-heading .section-subtitle");
+  if (wSubtitle) splitLinesReveal(wSubtitle);
+
+  const mapArt = one(shell, ".map-art");
+  if (mapArt) fadeUp(mapArt);
+
+  const copyItems = [
+    ...$(shell, ".welcome-copy > p"),
+    ...$(shell, ".welcome-copy .outline-button"),
+  ];
+  if (copyItems.length) {
+    staggerReveal(copyItems, {
+      trigger: one(shell, ".welcome-copy") ?? copyItems[0],
+    });
+  }
+
+  const featuresTitle = one(shell, ".features-title");
+  if (featuresTitle) fadeUp(featuresTitle);
+  const featureCells = $(shell, ".features-grid > div");
+  if (featureCells.length) {
+    staggerReveal(featureCells, {
+      trigger: one(shell, ".features-grid") ?? featureCells[0],
+    });
+  }
+
+  const wBottom = one(shell, ".welcome-line-bottom");
+  if (wBottom) drawLine(wBottom, "y");
 }
 
 // --- By Day / By Night (identical structure) ---
