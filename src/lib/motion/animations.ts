@@ -1,3 +1,9 @@
+// Reusable, low-level reveal factories. Each animates only transform / opacity /
+// clip-path (never layout, so no CLS), and the SplitText-based ones revert to
+// clean DOM when finished. They do NOT gate reduced-motion themselves — the
+// MotionRoot orchestrator only ever calls them inside a `prefers-reduced-motion:
+// no-preference` matchMedia branch, so reduced-motion users never get a hidden
+// initial state.
 import {
   gsap,
   SplitText,

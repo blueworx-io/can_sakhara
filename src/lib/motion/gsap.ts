@@ -1,3 +1,8 @@
+// Shared GSAP setup and the single source of truth for the site's motion
+// tokens. Registers the plugins once and exposes the easing, durations, travel
+// distance, and the in-page scroll container. Critical: the page scrolls inside
+// `.site-shell` (the <main>), NOT the window, so every ScrollTrigger must be
+// bound to it via `scrollTriggerVars` / `getScroller`.
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";

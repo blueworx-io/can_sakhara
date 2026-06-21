@@ -1,3 +1,8 @@
+// Per-route choreography. Each build function wires the reveal factories to a
+// page's existing elements (found by class hook or inert `data-anim` attribute).
+// MotionRoot calls these inside a reduced-motion-gated matchMedia block: the
+// `*Hero` builds run immediately (pre-paint page load), the `*Scroll` builds run
+// after webfonts settle (so SplitText measures real font metrics).
 import { gsap, ScrollTrigger, EASE, DUR } from "./gsap";
 import {
   fade,
@@ -10,6 +15,7 @@ import {
   drawLine,
 } from "./animations";
 
+// Scoped query helpers: `$` returns all matches as an array, `one` the first.
 const $ = <T extends Element = HTMLElement>(root: ParentNode, sel: string) =>
   Array.from(root.querySelectorAll<T>(sel));
 const one = <T extends Element = HTMLElement>(root: ParentNode, sel: string) =>
