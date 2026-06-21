@@ -1,5 +1,6 @@
 import { gsap, ScrollTrigger, EASE, DUR } from "./gsap";
 import {
+  fade,
   fadeUp,
   staggerReveal,
   splitLinesReveal,
@@ -96,6 +97,36 @@ export function buildHomeScroll(shell: HTMLElement): void {
 
   const wBottom = one(shell, ".welcome-line-bottom");
   if (wBottom) drawLine(wBottom, "y");
+
+  // --- Discover ---
+  const dTop = one(shell, ".discover-line-top");
+  if (dTop) drawLine(dTop, "y");
+  const dTitle = one(shell, ".discover-title");
+  if (dTitle) fadeUp(dTitle);
+  const cards = $(shell, ".discover-card");
+  if (cards.length) {
+    staggerReveal(cards, { trigger: one(shell, ".discover-grid") ?? cards[0] });
+  }
+  // Subtle card-icon hover (transform-only; does not touch the Figma button
+  // states). Listeners live on the home nodes, which unmount on navigation.
+  cards.forEach((card) => {
+    const icon = card.querySelector(".discover-card img");
+    if (!icon) return;
+    card.addEventListener("pointerenter", () =>
+      gsap.to(icon, { scale: 1.03, duration: 0.4, ease: EASE }),
+    );
+    card.addEventListener("pointerleave", () =>
+      gsap.to(icon, { scale: 1, duration: 0.4, ease: EASE }),
+    );
+  });
+
+  // --- Video ---
+  // Opacity-only so the button's own `hover:scale-105` transform still works.
+  const playBtn = one(shell, ".video-section button");
+  if (playBtn) fade(playBtn);
+
+  const dBottom = one(shell, ".discover-line-bottom");
+  if (dBottom) drawLine(dBottom, "y");
 }
 
 // --- By Day / By Night (identical structure) ---
@@ -114,6 +145,7 @@ export {
   ScrollTrigger,
   EASE,
   DUR,
+  fade,
   fadeUp,
   staggerReveal,
   splitLinesReveal,

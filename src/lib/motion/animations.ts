@@ -25,6 +25,19 @@ export function fadeUp(
   });
 }
 
+// Opacity-only reveal. Use for elements whose own hover/active state animates
+// `transform` (e.g. the video play button's `hover:scale-105`), so no leftover
+// inline transform from the reveal can shadow that hover.
+export function fade(target: Element, opts: { trigger?: Element } = {}): void {
+  gsap.set(target, { autoAlpha: 0 });
+  gsap.to(target, {
+    autoAlpha: 1,
+    duration: DUR.reveal,
+    ease: EASE,
+    scrollTrigger: scrollTriggerVars(opts.trigger ?? target),
+  });
+}
+
 // A group of items revealing together with a stagger, triggered by the first
 // item (or an explicit container trigger).
 export function staggerReveal(
