@@ -143,6 +143,7 @@ export default function Home() {
           fill
           priority
           sizes="100vw"
+          data-hero-scale
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/20" />
@@ -156,17 +157,20 @@ export default function Home() {
             alt=""
             width={655}
             height={50}
+            data-hero-hide
             className="hero-wordmark mx-auto h-auto w-[300px] sm:w-[520px] md:w-[655px]"
           />
           <div className="hero-actions mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/by-day"
+              data-hero-hide
               className="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#ac9a8c] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               By day
             </Link>
             <Link
               href="/by-night"
+              data-hero-hide
               className="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#001c2b] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#001c2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               By night

@@ -23,13 +23,47 @@ export function buildCommonChoreography(shell: HTMLElement): void {
   }
 }
 
-// Home route choreography.
-export function buildHomeChoreography(shell: HTMLElement): void {
+// --- Home ---
+
+// Above-the-fold page load. Runs immediately (pre-paint), no font wait.
+export function buildHomeHero(shell: HTMLElement): void {
+  const wordmark = one(shell, ".hero-wordmark");
+  const choices = $(shell, ".hero-choice");
+  const heroImg = one(shell, ".hero-section > img");
+
+  const tl = gsap.timeline({ defaults: { ease: EASE } });
+
+  // Transform-only settle on the LCP image (never opacity).
+  if (heroImg) {
+    gsap.set(heroImg, { scale: 1.04, transformOrigin: "center center" });
+    tl.to(heroImg, { scale: 1, duration: 1.6 }, 0);
+  }
+  if (wordmark) {
+    gsap.set(wordmark, { autoAlpha: 0, y: 20 });
+    tl.to(wordmark, { autoAlpha: 1, y: 0, duration: DUR.hero }, 0.1);
+  }
+  if (choices.length) {
+    gsap.set(choices, { autoAlpha: 0, y: 16 });
+    tl.to(
+      choices,
+      { autoAlpha: 1, y: 0, duration: DUR.reveal, stagger: 0.1 },
+      0.5,
+    );
+  }
+}
+
+// Below-the-fold scroll/text reveals. Runs after webfonts settle.
+export function buildHomeScroll(shell: HTMLElement): void {
   void shell;
 }
 
-// By Day / By Night route choreography (identical structure).
-export function buildDayNightChoreography(shell: HTMLElement): void {
+// --- By Day / By Night (identical structure) ---
+
+export function buildDayNightHero(shell: HTMLElement): void {
+  void shell;
+}
+
+export function buildDayNightScroll(shell: HTMLElement): void {
   void shell;
 }
 

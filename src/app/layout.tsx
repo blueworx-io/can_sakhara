@@ -40,9 +40,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${display.variable} ${body.variable} ${serif.variable} antialiased`}
     >
       <body>
+        {/* Pre-paint no-FOUC guard: hide above-the-fold hero entrance elements
+            before first paint, but only when JS runs and motion is allowed.
+            Runs during HTML parse, ahead of the hero markup below. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('motion-ready')}}catch(e){}",
+          }}
+        />
         {children}
         <MotionRoot />
       </body>

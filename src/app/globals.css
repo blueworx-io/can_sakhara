@@ -71,6 +71,24 @@ button:active {
   color: white;
 }
 
+/* No-FOUC guard for above-the-fold hero entrance elements. The `.motion-ready`
+   class is added to <html> by a tiny inline script BEFORE first paint, but only
+   when JS is active AND the user has not requested reduced motion. Without JS,
+   or under reduced motion, the class is absent and the content renders fully
+   visible. GSAP then animates these in, overriding the inline-hidden state. This
+   only sets opacity/transform (never layout), so it cannot cause layout shift. */
+html.motion-ready [data-hero-hide] {
+  opacity: 0;
+}
+
+html.motion-ready [data-hero-rule] {
+  transform: scaleX(0);
+}
+
+html.motion-ready [data-hero-scale] {
+  transform: scale(1.04);
+}
+
 /* Vertical section dividers are always horizontally centred on their section at
    every breakpoint. margin-inline:auto self-centres the line in both the flow
    (block) and flex contexts the sections use, so the centring can never drift
