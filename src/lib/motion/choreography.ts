@@ -132,7 +132,26 @@ export function buildHomeScroll(shell: HTMLElement): void {
 // --- By Day / By Night (identical structure) ---
 
 export function buildDayNightHero(shell: HTMLElement): void {
-  void shell;
+  const rule = one(shell, "[data-anim='hero-rule']");
+  const icon = one(shell, "[data-anim='hero-icon']");
+  const title = one(shell, "[data-anim='hero-title']");
+  const wordmark = one(shell, "[data-anim='hero-wordmark']");
+
+  const tl = gsap.timeline({ defaults: { ease: EASE } });
+  if (rule) {
+    gsap.set(rule, { transformOrigin: "center center", scaleX: 0 });
+    tl.to(rule, { scaleX: 1, duration: DUR.hero }, 0);
+  }
+  if (icon) {
+    gsap.set(icon, { autoAlpha: 0, y: 16 });
+    tl.to(icon, { autoAlpha: 1, y: 0, duration: DUR.reveal }, 0.15);
+  }
+  // Character reveal on the headline; short + immediate (LCP-safe).
+  if (title) charsReveal(title, { immediate: true, stagger: 0.04 });
+  if (wordmark) {
+    gsap.set(wordmark, { autoAlpha: 0, y: 14 });
+    tl.to(wordmark, { autoAlpha: 1, y: 0, duration: DUR.reveal }, 0.5);
+  }
 }
 
 export function buildDayNightScroll(shell: HTMLElement): void {

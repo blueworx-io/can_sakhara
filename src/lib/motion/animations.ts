@@ -82,6 +82,9 @@ export function charsReveal(
   el: Element,
   opts: { trigger?: Element; immediate?: boolean; stagger?: number } = {},
 ): void {
+  // Reveal the host (it may be pre-hidden by the no-FOUC CSS guard); the chars
+  // now carry the hidden state.
+  gsap.set(el, { autoAlpha: 1 });
   const split = new SplitText(el, { type: "chars", charsClass: "split-char" });
   gsap.set(split.chars, { autoAlpha: 0, y: DIST.y() * 0.5 });
   gsap.to(split.chars, {

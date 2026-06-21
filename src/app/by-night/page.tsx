@@ -46,6 +46,8 @@ export default function ByNight() {
 
         <span
           aria-hidden="true"
+          data-anim="hero-rule"
+          data-hero-rule
           className="absolute inset-x-0 top-[118px] mx-auto h-px w-[362px] bg-white md:top-[131px] md:w-[1280px]"
         />
 
@@ -55,9 +57,15 @@ export default function ByNight() {
             alt=""
             width={110}
             height={110}
+            data-anim="hero-icon"
+            data-hero-hide
             className="size-20 md:size-[110px]"
           />
-          <h1 className="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[17px] md:text-[56px] md:tracking-[28px] md:indent-[28px]">
+          <h1
+            data-anim="hero-title"
+            data-hero-hide
+            className="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[17px] md:text-[56px] md:tracking-[28px] md:indent-[28px]"
+          >
             By Night
           </h1>
           <Image
@@ -65,6 +73,8 @@ export default function ByNight() {
             alt="Can Sakhara"
             width={262}
             height={20}
+            data-anim="hero-wordmark"
+            data-hero-hide
             className="h-auto w-[157px] md:w-[262px]"
           />
         </div>
