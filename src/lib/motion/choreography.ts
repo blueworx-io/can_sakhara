@@ -155,7 +155,29 @@ export function buildDayNightHero(shell: HTMLElement): void {
 }
 
 export function buildDayNightScroll(shell: HTMLElement): void {
-  void shell;
+  // Full-width image curtain reveals.
+  $(shell, "[data-anim='clip-image']").forEach((sec) => clipImageReveal(sec));
+
+  // Headings: stagger the line elements where present (two-line lockups),
+  // otherwise a line-split reveal.
+  $(shell, "[data-anim='block-heading']").forEach((el) => {
+    const lines = $(el, ":scope > p");
+    if (lines.length > 1) staggerReveal(lines, { trigger: el });
+    else splitLinesReveal(el);
+  });
+
+  // Serif subtitles: line reveal.
+  $(shell, "[data-anim='block-subtitle']").forEach((el) => splitLinesReveal(el));
+
+  // Body copy: stagger the paragraphs.
+  $(shell, "[data-anim='block-copy']").forEach((el) => {
+    const paras = $(el, ":scope > p");
+    if (paras.length) staggerReveal(paras, { trigger: el });
+    else fadeUp(el);
+  });
+
+  // Enquire buttons.
+  $(shell, "[data-anim='block-button']").forEach((el) => fadeUp(el));
 }
 
 // Re-exported so callers need a single import surface.

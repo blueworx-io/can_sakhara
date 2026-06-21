@@ -11,6 +11,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type TransitionEvent as ReactTransitionEvent,
 } from "react";
+import { gsap, useGSAP, EASE, DUR, scrollTriggerVars } from "@/lib/motion/gsap";
 
 export type GalleryImage = { src: string; alt: string };
 
@@ -43,6 +44,7 @@ export default function GalleryCarousel({
   const n = images.length;
   const slides = [...images, ...images, ...images];
 
+  const desktopRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragStartX = useRef(0);
   const dragPxRef = useRef(0);
@@ -126,6 +128,35 @@ export default function GalleryCarousel({
     return () => window.clearInterval(id);
   }, [reduced, isDesktop, isDragging, autoplayNonce, step]);
 
+  // Desktop-only one-time entrance: stagger a clip reveal across the three
+  // initially-visible (middle-copy) slides when the gallery scrolls into view.
+  // The native mobile strip is left untouched.
+  useGSAP(
+    () => {
+      if (!isDesktop) return;
+      const root = desktopRef.current;
+      if (!root) return;
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const visible = Array.from(
+          root.querySelectorAll<HTMLElement>(".gallery-slide"),
+        ).slice(n, n + 3);
+        visible.forEach((slide, i) => {
+          gsap.set(slide, { clipPath: "inset(0% 0% 100% 0%)" });
+          gsap.to(slide, {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: DUR.image,
+            ease: EASE,
+            delay: i * 0.08,
+            scrollTrigger: scrollTriggerVars(root),
+          });
+        });
+      });
+      return () => mm.revert();
+    },
+    { scope: desktopRef, dependencies: [isDesktop] },
+  );
+
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 && event.pointerType === "mouse") return;
     if (settlingRef.current) return;
@@ -206,7 +237,7 @@ export default function GalleryCarousel({
       </div>
 
       {/* Desktop: looping, draggable carousel at the fixed 1440px frame. */}
-      <div className="hidden md:flex md:justify-center">
+      <div ref={desktopRef} className="hidden md:flex md:justify-center">
         <div
           ref={viewportRef}
           role="group"

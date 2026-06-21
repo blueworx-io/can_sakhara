@@ -22,14 +22,17 @@ function SecondaryButton({
   children,
   href,
   className = "",
+  anim,
 }: {
   children: React.ReactNode;
   href: string;
   className?: string;
+  anim?: string;
 }) {
   return (
     <a
       href={href}
+      data-anim={anim}
       className={`inline-flex items-center justify-center whitespace-nowrap border border-white px-4 py-[10px] font-display text-[10px] font-normal uppercase leading-[1.4] tracking-[4px] text-white transition-colors hover:bg-white hover:text-[#031927] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px] ${className}`}
     >
       <span>{children}</span>
@@ -82,7 +85,10 @@ export default function ByNight() {
 
       {/* Full-width estate view — desktop is framed top and bottom by a 2px
           white divider; mobile keeps the original dark theme, unchanged. */}
-      <section className="relative mt-[2px] h-[300px] w-full md:mt-0 md:h-[531px] md:border-y-2 md:border-white">
+      <section
+        data-anim="clip-image"
+        className="relative mt-[2px] h-[300px] w-full md:mt-0 md:h-[531px] md:border-y-2 md:border-white"
+      >
         <Image
           src="/images/bynight-1.png"
           alt="Aerial view over Can Sakhara lit up at night"
@@ -95,7 +101,10 @@ export default function ByNight() {
       {/* Glorious afterhours */}
       <section className="flex h-[588px] w-full flex-col items-center bg-[#000e16] px-5 pt-[60px] md:h-[736px] md:px-0 md:pt-[116px]">
         <div className="flex w-full flex-col items-center gap-[25px] md:w-[1064px] md:gap-[50px]">
-          <div className="text-center font-display text-[30px] uppercase leading-none text-white md:text-[48px]">
+          <div
+            data-anim="block-heading"
+            className="text-center font-display text-[30px] uppercase leading-none text-white md:text-[48px]"
+          >
             <p className="font-thin tracking-[6px] indent-[3px] md:tracking-[3.2px] md:indent-[1.6px]">
               Glorious
             </p>
@@ -103,12 +112,18 @@ export default function ByNight() {
               Afterhours
             </p>
           </div>
-          <p className="w-[322px] text-center font-serif text-[15px] font-light italic leading-[1.8] tracking-[1.5px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]">
+          <p
+            data-anim="block-subtitle"
+            className="w-[322px] text-center font-serif text-[15px] font-light italic leading-[1.8] tracking-[1.5px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+          >
             As the sun sets over the island,
             <br />
             Can Sakhara comes alive in the glow of the afterhours
           </p>
-          <div className="flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center font-body text-[11px] font-light leading-[1.6] tracking-[0.55px] text-white md:w-auto md:max-w-none md:flex-row md:items-start md:justify-center md:gap-[19.5px] md:text-left md:text-[16px] md:tracking-[0.8px]">
+          <div
+            data-anim="block-copy"
+            className="flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center font-body text-[11px] font-light leading-[1.6] tracking-[0.55px] text-white md:w-auto md:max-w-none md:flex-row md:items-start md:justify-center md:gap-[19.5px] md:text-left md:text-[16px] md:tracking-[0.8px]"
+          >
             <p className="md:w-[380px] md:text-right">
               The golden hour takes hold and Ibiza puts on a show. As daylight
               fades, Can Sakhara transforms into a warm and cinematic retreat.
@@ -138,22 +153,31 @@ export default function ByNight() {
       {/* Solace of slumber */}
       <section className="flex h-[332px] w-full flex-col items-center bg-[#031927] px-5 pt-[60px] md:h-[580px] md:px-0 md:pt-[115px]">
         <div className="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[50px]">
-          <h2 className="text-center font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] text-white indent-[2.4px] md:text-[34px] md:leading-[1.4] md:tracking-[6.8px] md:indent-[3.4px]">
+          <h2
+            data-anim="block-heading"
+            className="text-center font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] text-white indent-[2.4px] md:text-[34px] md:leading-[1.4] md:tracking-[6.8px] md:indent-[3.4px]"
+          >
             Solace of Slumber
           </h2>
-          <p className="w-[312px] text-center font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]">
+          <p
+            data-anim="block-subtitle"
+            className="w-[312px] text-center font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+          >
             Whether retreating to the Primary Suite or one of seven individually
             designed guest rooms, each offers a private sanctuary where the day
             dissolves into deep, restorative rest.
           </p>
-          <SecondaryButton href="mailto:reservations@cansakhara.com">
+          <SecondaryButton anim="block-button" href="mailto:reservations@cansakhara.com">
             Enquire
           </SecondaryButton>
         </div>
       </section>
 
       {/* Full-width pool view */}
-      <section className="relative mt-[2px] h-[266px] w-full md:h-[663px]">
+      <section
+        data-anim="clip-image"
+        className="relative mt-[2px] h-[266px] w-full md:h-[663px]"
+      >
         <Image
           src="/images/bynight-2.png"
           alt="The illuminated pool and terraces of Can Sakhara from above"

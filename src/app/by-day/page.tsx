@@ -22,14 +22,17 @@ function SecondaryButton({
   children,
   href,
   className = "",
+  anim,
 }: {
   children: React.ReactNode;
   href: string;
   className?: string;
+  anim?: string;
 }) {
   return (
     <a
       href={href}
+      data-anim={anim}
       className={`inline-flex items-center justify-center whitespace-nowrap border border-white px-4 py-[10px] font-display text-[10px] font-normal uppercase leading-[1.4] tracking-[4px] text-white transition-colors hover:bg-white hover:text-[#ac9a8c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px] ${className}`}
     >
       <span>{children}</span>
@@ -81,7 +84,10 @@ export default function ByDay() {
       </section>
 
       {/* Full-width estate view */}
-      <section className="relative mt-[2px] h-[300px] w-full md:h-[531px]">
+      <section
+        data-anim="clip-image"
+        className="relative mt-[2px] h-[300px] w-full md:h-[531px]"
+      >
         <Image
           src="/images/byday-1.png"
           alt="Aerial view over Can Sakhara and the hills of Ibiza"
@@ -95,7 +101,10 @@ export default function ByDay() {
           white divider; mobile keeps the original layout, unchanged. */}
       <section className="flex h-[588px] w-full flex-col items-center bg-[#918074] px-5 pt-[60px] md:h-[736px] md:border-y-2 md:border-white md:px-0 md:pt-[116px]">
         <div className="flex w-full flex-col items-center gap-[25px] md:w-[1064px] md:gap-[50px]">
-          <div className="text-center font-display text-[30px] uppercase leading-none text-white md:text-[48px]">
+          <div
+            data-anim="block-heading"
+            className="text-center font-display text-[30px] uppercase leading-none text-white md:text-[48px]"
+          >
             <p className="font-thin tracking-[6px] indent-[3px] md:tracking-[3.2px] md:indent-[1.6px]">
               Sun-Drenched
             </p>
@@ -103,12 +112,18 @@ export default function ByDay() {
               Serenity
             </p>
           </div>
-          <p className="w-[322px] text-center font-serif text-[15px] font-light italic leading-[1.8] tracking-[1.5px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]">
+          <p
+            data-anim="block-subtitle"
+            className="w-[322px] text-center font-serif text-[15px] font-light italic leading-[1.8] tracking-[1.5px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+          >
             A myriad of spaces, both inside and out,
             <br />
             inviting each guest to shape the day as they choose
           </p>
-          <div className="flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center font-body text-[11px] font-light leading-[1.6] tracking-[0.55px] text-white md:w-[760px] md:max-w-none md:flex-row md:items-start md:gap-5 md:text-left md:text-[16px] md:tracking-[0.8px]">
+          <div
+            data-anim="block-copy"
+            className="flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center font-body text-[11px] font-light leading-[1.6] tracking-[0.55px] text-white md:w-[760px] md:max-w-none md:flex-row md:items-start md:gap-5 md:text-left md:text-[16px] md:tracking-[0.8px]"
+          >
             <p className="md:w-[370px] md:text-right">
               As morning light pours across the terraces, Can Sakhara reveals its
               most restorative side. Whether energised and productive or completely
@@ -138,21 +153,30 @@ export default function ByDay() {
       {/* Balearic bliss */}
       <section className="flex h-[308px] w-full flex-col items-center bg-[#ac9a8c] px-5 pt-[60px] md:h-[529px] md:px-0 md:pt-[115px]">
         <div className="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[50px]">
-          <h2 className="text-center font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] text-white indent-[2.4px] md:text-[34px] md:leading-[1.4] md:tracking-[6.8px] md:indent-[3.4px]">
+          <h2
+            data-anim="block-heading"
+            className="text-center font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] text-white indent-[2.4px] md:text-[34px] md:leading-[1.4] md:tracking-[6.8px] md:indent-[3.4px]"
+          >
             Balearic Bliss
           </h2>
-          <p className="w-[312px] text-center font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]">
+          <p
+            data-anim="block-subtitle"
+            className="w-[312px] text-center font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+          >
             Whether seeking quiet restoration or vibrant island living, every
             moment unfolds with effortless ease beneath the Balearic sun.
           </p>
-          <SecondaryButton href="mailto:reservations@cansakhara.com">
+          <SecondaryButton anim="block-button" href="mailto:reservations@cansakhara.com">
             Enquire
           </SecondaryButton>
         </div>
       </section>
 
       {/* Full-width terrace view */}
-      <section className="relative mt-[2px] h-[266px] w-full md:h-[663px]">
+      <section
+        data-anim="clip-image"
+        className="relative mt-[2px] h-[266px] w-full md:h-[663px]"
+      >
         <Image
           src="/images/byday-2.png"
           alt="Sun loungers and planting on the terraces of Can Sakhara"
