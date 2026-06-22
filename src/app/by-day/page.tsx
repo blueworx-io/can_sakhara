@@ -3,6 +3,7 @@ import Image from "next/image";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import GalleryCarousel from "@/components/GalleryCarousel";
+import { SunIcon } from "@/components/SunMoonIcon";
 
 export const metadata: Metadata = {
   title: "Can Sakhara | By Day",
@@ -55,15 +56,7 @@ export default function ByDay() {
         />
 
         <div className="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[60px]">
-          <Image
-            src="/images/sun.svg"
-            alt=""
-            width={110}
-            height={110}
-            data-anim="hero-icon"
-            data-hero-hide
-            className="size-20 md:size-[110px]"
-          />
+          <SunIcon className="size-20 md:size-[110px]" />
           <h1
             data-anim="hero-title"
             data-hero-hide

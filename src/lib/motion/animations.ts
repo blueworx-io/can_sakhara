@@ -136,6 +136,27 @@ export function clipImageReveal(el: Element, opts: { trigger?: Element } = {}): 
   });
 }
 
+// Self-drawing stroke reveal (DrawSVG). The stroke draws on with any fill faded
+// out, then the fill fades in. The single source of truth for the site's "draw"
+// effect — used by the header centre logo mark and the By Day / By Night sun &
+// moon icons. `duration` sets the draw speed; `loop` makes it repeat with a long
+// pause between redraws (the icons loop; the header draws once and is replayed on
+// its scroll-up reveal). The fill step is a no-op on stroke-only marks (the
+// sun/moon are `fill="none"`); it only animates the filled logo. Returns the
+// timeline so callers can hold/replay it. Gated to no-reduced-motion by the caller.
+export function drawSelf(
+  targets: gsap.TweenTarget,
+  opts: { duration?: number; loop?: boolean } = {},
+): gsap.core.Timeline {
+  const tl = gsap.timeline(opts.loop ? { repeat: -1, repeatDelay: 5 } : {});
+  tl.fromTo(
+    targets,
+    { drawSVG: "0%", fillOpacity: 0 },
+    { drawSVG: "100%", duration: opts.duration ?? 4.8, ease: "power1.inOut" },
+  ).to(targets, { fillOpacity: 1, duration: 0.8, ease: "power1.out" }, "-=0.5");
+  return tl;
+}
+
 // Decorative divider "draw" from its origin edge.
 export function drawLine(el: Element, axis: "x" | "y" = "y"): void {
   const origin = axis === "y" ? "top center" : "center left";

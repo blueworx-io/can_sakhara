@@ -92,6 +92,18 @@ html.motion-ready [data-hero-scale] {
   transform: scale(1.04);
 }
 
+/* No-FOUC guard for the self-drawing By Day / By Night marks (sun & moon). Like
+   the hero guards above, it is only active when JS runs and motion is allowed.
+   It hides each icon's stroke before first paint (a stroke wholly inside its
+   dash gap), so the DrawSVG self-draw set up by MotionRoot is never preceded by
+   a flash of the fully drawn icon. DrawSVG then writes its own inline dash
+   values, which override this rule. Without JS or under reduced motion the
+   class is absent and the icons render fully drawn. */
+html.motion-ready [data-anim="draw-icon"] path {
+  stroke-dasharray: 9999;
+  stroke-dashoffset: 9999;
+}
+
 /* Vertical section dividers are always horizontally centred on their section at
    every breakpoint. margin-inline:auto self-centres the line in both the flow
    (block) and flex contexts the sections use, so the centring can never drift
@@ -656,11 +668,6 @@ html.motion-ready [data-hero-scale] {
   .discover-card {
     width: 270px;
     height: 298px;
-  }
-
-  .discover-card img {
-    width: 80px;
-    height: 80px;
   }
 
   .discover-card .outline-button {

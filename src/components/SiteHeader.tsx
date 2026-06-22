@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
+import { drawSelf } from "@/lib/motion/animations";
 import MenuDrawer from "@/components/MenuDrawer";
 
 const ENQUIRE_HREF = "mailto:reservations@cansakhara.com";
@@ -32,30 +33,24 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  // The centre logo mark draws itself (DrawSVG) on load and on a loop; the
-  // running timeline is held here so a scroll-up reveal can replay it.
+  // The centre logo mark draws itself (DrawSVG) once on load; the running
+  // timeline is held here so a scroll-up reveal can replay it.
   const logoPathRef = useRef<SVGPathElement>(null);
   const drawTlRef = useRef<gsap.core.Timeline | null>(null);
 
   const close = useCallback(() => setOpen(false), []);
 
-  // Logo self-draw: the stroke draws on (fill faded out), then the fill fades
-  // in, with a 5s pause between redraws (3.1s draw + 5s gap). Gated to
-  // no-reduced-motion via matchMedia, so
-  // reduced-motion users keep the static filled mark. useGSAP sets the hidden
-  // "from" state pre-paint, so the solid logo never flashes before drawing.
+  // Logo self-draw via the shared `drawSelf` helper — draws once on load (no
+  // loop); the scroll handler below replays it when the header reappears.
+  // Gated to no-reduced-motion via matchMedia, so reduced-motion users keep the
+  // static filled mark. useGSAP sets the hidden "from" state pre-paint, so the
+  // solid logo never flashes before drawing.
   useGSAP(() => {
     const path = logoPathRef.current;
     if (!path) return;
     const mm = gsap.matchMedia();
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const tl = gsap.timeline({ repeat: -1, repeatDelay: 5 });
-      tl.fromTo(
-        path,
-        { drawSVG: "0%", fillOpacity: 0 },
-        { drawSVG: "100%", duration: 3.0, ease: "power1.inOut" },
-      ).to(path, { fillOpacity: 1, duration: 0.8, ease: "power1.out" }, "-=0.5");
-      drawTlRef.current = tl;
+      drawTlRef.current = drawSelf(path);
     });
     return () => {
       drawTlRef.current = null;

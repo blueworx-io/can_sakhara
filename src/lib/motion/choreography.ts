@@ -3,7 +3,7 @@
 // MotionRoot calls these inside a reduced-motion-gated matchMedia block: the
 // `*Hero` builds run immediately (pre-paint page load), the `*Scroll` builds run
 // after webfonts settle (so SplitText measures real font metrics).
-import { gsap, ScrollTrigger, EASE, DUR } from "./gsap";
+import { gsap, ScrollTrigger, EASE, DUR, scrollTriggerVars } from "./gsap";
 import {
   fade,
   fadeUp,
@@ -13,6 +13,7 @@ import {
   revealExistingChars,
   clipImageReveal,
   drawLine,
+  drawSelf,
 } from "./animations";
 
 // Scoped query helpers: `$` returns all matches as an array, `one` the first.
@@ -20,6 +21,27 @@ const $ = <T extends Element = HTMLElement>(root: ParentNode, sel: string) =>
   Array.from(root.querySelectorAll<T>(sel));
 const one = <T extends Element = HTMLElement>(root: ParentNode, sel: string) =>
   root.querySelector<T>(sel);
+
+// Self-drawing sun / moon icons (DrawSVG), via the shared `drawSelf` helper —
+// faster than the header logo and looping (the header draws once). Each icon's
+// paths draw on together, then repeat with a pause. Found by the inert
+// `data-anim="draw-icon"` hook on each inlined SVG. With `onScroll`, the draw is
+// held (paused at 0%) until the icon scrolls into view, so a below-the-fold icon
+// (the home Discover cards) is caught from the start rather than mid-loop; the
+// above-the-fold hero icons draw immediately on load.
+function drawIcons(root: ParentNode, opts: { onScroll?: boolean } = {}): void {
+  $(root, "[data-anim='draw-icon']").forEach((icon) => {
+    const paths = $(icon, "path");
+    if (!paths.length) return;
+    const tl = drawSelf(paths, { duration: 2.5, loop: true });
+    if (!opts.onScroll) return;
+    tl.pause();
+    ScrollTrigger.create({
+      ...scrollTriggerVars(icon),
+      onEnter: () => tl.play(),
+    });
+  });
+}
 
 // Shared across every page (the footer is on all three routes).
 export function buildCommonChoreography(shell: HTMLElement): void {
@@ -113,10 +135,13 @@ export function buildHomeScroll(shell: HTMLElement): void {
   if (cards.length) {
     staggerReveal(cards, { trigger: one(shell, ".discover-grid") ?? cards[0] });
   }
+  // The card sun / moon marks self-draw (DrawSVG), held until each scrolls into
+  // view so the draw is caught from the start (they sit below the fold).
+  drawIcons(shell, { onScroll: true });
   // Subtle card-icon hover (transform-only; does not touch the Figma button
   // states). Listeners live on the home nodes, which unmount on navigation.
   cards.forEach((card) => {
-    const icon = card.querySelector(".discover-card img");
+    const icon = card.querySelector("svg");
     if (!icon) return;
     card.addEventListener("pointerenter", () =>
       gsap.to(icon, { scale: 1.03, duration: 0.4, ease: EASE }),
@@ -139,7 +164,6 @@ export function buildHomeScroll(shell: HTMLElement): void {
 
 export function buildDayNightHero(shell: HTMLElement): void {
   const rule = one(shell, "[data-anim='hero-rule']");
-  const icon = one(shell, "[data-anim='hero-icon']");
   const wordmark = one(shell, "[data-anim='hero-wordmark']");
 
   const tl = gsap.timeline({ defaults: { ease: EASE } });
@@ -147,10 +171,9 @@ export function buildDayNightHero(shell: HTMLElement): void {
     gsap.set(rule, { transformOrigin: "center center", scaleX: 0 });
     tl.to(rule, { scaleX: 1, duration: DUR.hero }, 0);
   }
-  if (icon) {
-    gsap.set(icon, { autoAlpha: 0, y: 16 });
-    tl.to(icon, { autoAlpha: 1, y: 0, duration: DUR.reveal }, 0.15);
-  }
+  // The hero sun / moon mark self-draws (DrawSVG), the same as the header logo,
+  // instead of a fade + rise.
+  drawIcons(shell);
   // NB: the headline char reveal is deliberately NOT built here. It uses
   // SplitText, which must measure against the loaded webfont — running it in the
   // pre-font hero phase splits on fallback metrics, so the wide letter-spacing
@@ -211,4 +234,5 @@ export {
   revealExistingChars,
   clipImageReveal,
   drawLine,
+  drawSelf,
 };
