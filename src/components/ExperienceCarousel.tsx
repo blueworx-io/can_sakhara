@@ -104,13 +104,20 @@ const experiences: Experience[] = [
 const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
 const DURATION_MS = 650;
 
-// A clone of the last slide is prepended and a clone of the first appended so
-// the track can wrap seamlessly in either direction.
+// Clones bracket the real slides so the track can wrap seamlessly in either
+// direction. The last real slide is prepended for the backward wrap. For the
+// forward wrap the first TWO real slides are appended: the desktop layout
+// reveals a peek of the *next* slide on the right, so animating onto the leading
+// clone (a clone of the first slide) needs the slide after it to exist —
+// otherwise the peek strip renders blank as you pass the last real slide. The
+// wrap still teleports from the leading clone (index n + 1) back to the first
+// real slide; the extra clone at index n + 2 only ever fills that peek.
 const n = experiences.length;
 const slides: Experience[] = [
   experiences[n - 1],
   ...experiences,
   experiences[0],
+  experiences[1],
 ];
 
 export default function ExperienceCarousel() {
@@ -131,6 +138,28 @@ export default function ExperienceCarousel() {
   useEffect(() => {
     indexRef.current = index;
   }, [index]);
+
+  // Settle guarantee. Once a pointer interaction has ended and nothing is
+  // animating, the track MUST rest on a real slide with no drag offset. This is
+  // the safety net for an interrupted wrap (a pointerdown cancels the wrap's
+  // transition before onTransitionEnd can swap the clone for its real slide,
+  // stranding the index on a clone) and for any leftover drag a fast/again-
+  // interrupted gesture failed to snap — without it the track can freeze
+  // half-exposed at `clone + drag`, which never recovers. It never interferes
+  // with the live wrap (that runs with `animate` true and is left untouched).
+  useEffect(() => {
+    if (isDragging || animate) return;
+    if (index === 0 || index === n + 1) {
+      // Stranded on a clone: teleport to the identical real slide (invisible).
+      // Any residual drag offset is carried and snapped out on the next pass.
+      setIndex(index === 0 ? n : 1);
+    } else if (dragPx !== 0) {
+      // Leftover offset at a real slide: animate it back to a clean rest.
+      dragPxRef.current = 0;
+      setDragPx(0);
+      setAnimate(true);
+    }
+  }, [index, animate, isDragging, dragPx]);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -168,14 +197,17 @@ export default function ExperienceCarousel() {
 
   const logical = ((index - 1) % n + n) % n;
 
-  // Step the carousel by ±1 (or 0 to settle back to the current slide).
+  // Step the carousel by ±1 (or 0 to settle back to the current slide). Always
+  // settle the drag offset and re-enable the transition first so the track snaps
+  // to a slide even when the index change below is ignored — a released drag must
+  // never be left frozen at a half-exposed offset.
   const step = useCallback((delta: number) => {
-    // Ignore input while resting on a clone (a wrap is about to fire) so a
-    // fast second press can't overshoot the rendered range.
-    if (indexRef.current === 0 || indexRef.current === n + 1) return;
     setAnimate(true);
     dragPxRef.current = 0;
     setDragPx(0);
+    // Ignore index changes while resting on a clone (a wrap is about to fire) so
+    // a fast second input can't overshoot the rendered range.
+    if (indexRef.current === 0 || indexRef.current === n + 1) return;
     if (delta !== 0) setIndex((current) => current + delta);
   }, []);
 
