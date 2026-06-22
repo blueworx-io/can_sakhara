@@ -5,25 +5,32 @@ import { useRef } from "react";
 import { gsap, useGSAP, getScroller } from "@/lib/motion/gsap";
 import type { GalleryImage } from "./GalleryCarousel";
 
-// Desktop-only pinned, scroll-driven horizontal gallery. Renders the same fixed 1440px frame
-// and 460×663 slides as the rest of the site (reusing the .gallery-* CSS), but instead of the
-// index/drag/autoplay carousel it pins the surrounding <section> and translates the track
-// horizontally with the page scroll (GSAP ScrollTrigger `scrub`). Mounted only at ≥768px with
-// motion allowed (the wrapper decides), so it never runs on mobile or under reduced motion.
+// Desktop-only scroll-driven horizontal gallery.
+//
+// The band is held in place with native CSS `position: sticky`, NOT ScrollTrigger's
+// JS pin. Inside the custom `.site-shell` scroller, ScrollTrigger's transform-pin has
+// to rewrite a transform every frame to counteract the scroll, which lags real momentum
+// scrolling by a frame and makes the band visibly bounce up and down. Sticky is handled
+// by the browser on the compositor, so the band stays perfectly still and GSAP only has
+// to scrub the row horizontally.
+//
+// Layout: a tall transparent wrapper provides the scroll distance; a full-viewport sticky
+// child holds the white band at the top while you scroll through it; the white band lives
+// here (not on the page <section>) so the area below it stays transparent and shows the
+// page background — matching the existing By Day (white) / By Night (dark) look.
+// Mounted only at >=768px with motion allowed.
 export default function GalleryScrollRow({ images }: { images: GalleryImage[] }) {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const outerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      const root = rootRef.current;
+      const outer = outerRef.current;
       const track = trackRef.current;
       const viewport = viewportRef.current;
-      if (!root || !track || !viewport) return;
+      if (!outer || !track || !viewport) return;
 
-      // Defensive: the wrapper only mounts this at ≥768px with motion allowed, but guard
-      // anyway so a stray mount can never pin under reduced motion or on a phone.
       const mm = gsap.matchMedia();
       mm.add(
         {
@@ -37,25 +44,22 @@ export default function GalleryScrollRow({ images }: { images: GalleryImage[] })
           };
           if (!isDesktop || reduced) return;
 
-          const section = root.closest("section");
-          if (!section) return;
-
-          // Distance the track must travel so its last slide reaches the frame's right edge.
-          // Function-based (+ invalidateOnRefresh) so it recomputes on resize.
-          const distance = () => track.scrollWidth - viewport.clientWidth;
+          // How far the row must travel so the last slide reaches the frame's right edge.
+          const travel = () => track.scrollWidth - viewport.clientWidth;
+          // Give the wrapper exactly `travel` px of scroll beyond one viewport, so the
+          // sticky band holds for precisely the horizontal distance (1:1 scroll-to-travel).
+          outer.style.height = `calc(100dvh + ${travel()}px)`;
 
           gsap.to(track, {
-            x: () => -distance(),
+            x: () => -travel(),
             ease: "none",
             scrollTrigger: {
-              trigger: section,
+              trigger: outer,
               scroller: getScroller() ?? undefined,
-              pin: true,
               start: "top top",
-              end: () => "+=" + distance(),
+              end: "bottom bottom",
               scrub: 1,
               invalidateOnRefresh: true,
-              anticipatePin: 1,
             },
           });
         },
@@ -63,35 +67,41 @@ export default function GalleryScrollRow({ images }: { images: GalleryImage[] })
 
       return () => mm.revert();
     },
-    { scope: rootRef },
+    { scope: outerRef },
   );
 
   return (
-    <div ref={rootRef} className="flex justify-center">
-      <div
-        ref={viewportRef}
-        role="group"
-        aria-roledescription="carousel"
-        aria-label="Gallery"
-        className="gallery-viewport"
-      >
-        <div ref={trackRef} className="gallery-track">
-          {images.map((image, i) => (
+    <div ref={outerRef} className="relative">
+      <div className="sticky top-0 h-[100dvh]">
+        <div className="bg-white py-[20px] md:py-[30px]">
+          <div className="flex justify-center">
             <div
-              key={`${image.src}-${i}`}
-              aria-roledescription="slide"
-              className="gallery-slide"
+              ref={viewportRef}
+              role="group"
+              aria-roledescription="carousel"
+              aria-label="Gallery"
+              className="gallery-viewport"
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                draggable={false}
-                sizes="460px"
-                className="object-cover"
-              />
+              <div ref={trackRef} className="gallery-track">
+                {images.map((image, i) => (
+                  <div
+                    key={`${image.src}-${i}`}
+                    aria-roledescription="slide"
+                    className="gallery-slide"
+                  >
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      draggable={false}
+                      sizes="460px"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

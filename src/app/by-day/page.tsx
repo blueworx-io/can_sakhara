@@ -137,9 +137,11 @@ export default function ByDay() {
         </div>
       </section>
 
-      {/* Gallery — three images. Desktop: a looping draggable carousel. Mobile:
-          the original snap-scrolling peek strip (278px slides, centred). */}
-      <section className="w-full bg-white py-[20px] md:py-[30px]">
+      {/* Gallery. Desktop: a pinned, scroll-driven horizontal row (sticky-held).
+          Mobile / reduced-motion: the snap-scrolling peek strip (278px slides).
+          The white band now lives inside GalleryCarousel's children so the desktop
+          sticky scroll-region can stay transparent. */}
+      <section className="w-full">
         <GalleryCarousel images={galleryImages} />
       </section>
 

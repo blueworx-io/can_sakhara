@@ -179,7 +179,10 @@ export default function GalleryPeekStrip({
 
   return (
     // Looping, draggable, auto-rotating carousel at every breakpoint (centred
-    // 278px peek strip on mobile, fixed 1440px frame on desktop).
+    // 278px peek strip on mobile, fixed 1440px frame on desktop). The white band
+    // (bg + vertical padding) lives here, not on the page <section>, so the desktop
+    // sticky scroll-row can show the page background around its band.
+    <div className="bg-white py-[20px] md:py-[30px]">
     <div className="flex justify-center">
       <div
         ref={viewportRef}
@@ -219,6 +222,7 @@ export default function GalleryPeekStrip({
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 }
