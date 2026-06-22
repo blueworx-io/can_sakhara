@@ -11,7 +11,6 @@ import {
   type PointerEvent as ReactPointerEvent,
   type TransitionEvent as ReactTransitionEvent,
 } from "react";
-import { gsap, useGSAP, EASE, DUR, scrollTriggerVars } from "@/lib/motion/gsap";
 import type { GalleryImage } from "./GalleryCarousel";
 
 // Matches the site's existing ExperienceCarousel feel so both carousels read as
@@ -34,7 +33,8 @@ const SLIDE_W = 460;
 // left/centre/right visible); desktop shows the fixed 460×663 row in the 1440px
 // frame. Three copies of the set are rendered so the loop can wrap in either
 // direction without ever revealing a gap; once a step lands outside the middle
-// copy we silently jump back into it.
+// copy we silently jump back into it. Used on mobile, and as the reduced-motion
+// desktop fallback (desktop with motion uses the pinned GalleryScrollRow instead).
 export default function GalleryPeekStrip({
   images,
 }: {
@@ -43,7 +43,6 @@ export default function GalleryPeekStrip({
   const n = images.length;
   const slides = [...images, ...images, ...images];
 
-  const rootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragStartX = useRef(0);
   const dragPxRef = useRef(0);
@@ -56,7 +55,6 @@ export default function GalleryPeekStrip({
   const [dragPx, setDragPx] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
   // Bumped on manual input so the autoplay timer restarts from a fresh dwell.
   const [autoplayNonce, setAutoplayNonce] = useState(0);
   const indexRef = useRef(index);
@@ -71,16 +69,6 @@ export default function GalleryPeekStrip({
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setReduced(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-
-  // The carousel only renders (and so only needs to autoplay) at the desktop
-  // breakpoint; mobile uses the native snap strip.
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 768px)");
-    const update = () => setIsDesktop(query.matches);
     update();
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
@@ -127,35 +115,6 @@ export default function GalleryPeekStrip({
     const id = window.setInterval(() => step(1), AUTOPLAY_MS);
     return () => window.clearInterval(id);
   }, [reduced, isDragging, autoplayNonce, step]);
-
-  // Desktop-only one-time entrance: stagger a clip reveal across the three
-  // initially-visible (middle-copy) slides when the gallery scrolls into view.
-  // The native mobile strip is left untouched.
-  useGSAP(
-    () => {
-      if (!isDesktop) return;
-      const root = rootRef.current;
-      if (!root) return;
-      const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const visible = Array.from(
-          root.querySelectorAll<HTMLElement>(".gallery-slide"),
-        ).slice(n, n + 3);
-        visible.forEach((slide, i) => {
-          gsap.set(slide, { clipPath: "inset(0% 0% 100% 0%)" });
-          gsap.to(slide, {
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: DUR.image,
-            ease: EASE,
-            delay: i * 0.08,
-            scrollTrigger: scrollTriggerVars(root),
-          });
-        });
-      });
-      return () => mm.revert();
-    },
-    { scope: rootRef, dependencies: [isDesktop] },
-  );
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 && event.pointerType === "mouse") return;
@@ -221,7 +180,7 @@ export default function GalleryPeekStrip({
   return (
     // Looping, draggable, auto-rotating carousel at every breakpoint (centred
     // 278px peek strip on mobile, fixed 1440px frame on desktop).
-    <div ref={rootRef} className="flex justify-center">
+    <div className="flex justify-center">
       <div
         ref={viewportRef}
         role="group"
