@@ -84,18 +84,41 @@ export function splitLinesReveal(
 
 // Character reveal using SplitText (for plain-text headlines, e.g. "By Day").
 // `immediate` plays on creation (hero page-load) instead of on scroll.
+//
+// `inline` wraps each char in a `display:inline` <span> instead of GSAP's default
+// `inline-block` <div>. This is essential for LETTER-SPACED headlines: inline-block
+// char boxes are atomic inlines, so the tracking is re-applied around every box and
+// the line measures markedly wider than the un-split run (~25% for "By Day" at 28px
+// tracking — measured). The chars hold that expanded layout while hidden, so the
+// reveal shows over-tracked text, then it snaps back to the designed width when
+// SplitText reverts. Inline spans are layout-transparent — identical width to the
+// un-split text — so there is no expansion and nothing to snap back from. Inline
+// elements ignore `transform`, so the inline reveal is opacity-only; lift any rise
+// onto the (block-level) host instead (see buildDayNightHeroTitle).
 export function charsReveal(
   el: Element,
-  opts: { trigger?: Element; immediate?: boolean; stagger?: number } = {},
+  opts: {
+    trigger?: Element;
+    immediate?: boolean;
+    stagger?: number;
+    inline?: boolean;
+  } = {},
 ): void {
   // Reveal the host (it may be pre-hidden by the no-FOUC CSS guard); the chars
   // now carry the hidden state.
   gsap.set(el, { autoAlpha: 1 });
-  const split = new SplitText(el, { type: "chars", charsClass: "split-char" });
-  gsap.set(split.chars, { autoAlpha: 0, y: DIST.y() * 0.5 });
+  const split = new SplitText(el, {
+    type: "chars",
+    charsClass: "split-char",
+    ...(opts.inline ? { tag: "span" } : {}),
+  });
+  gsap.set(
+    split.chars,
+    opts.inline ? { autoAlpha: 0 } : { autoAlpha: 0, y: DIST.y() * 0.5 },
+  );
   gsap.to(split.chars, {
     autoAlpha: 1,
-    y: 0,
+    ...(opts.inline ? {} : { y: 0 }),
     duration: DUR.reveal,
     ease: EASE,
     stagger: opts.stagger ?? 0.03,

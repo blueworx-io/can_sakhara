@@ -174,24 +174,28 @@ export function buildDayNightHero(shell: HTMLElement): void {
   // The hero sun / moon mark self-draws (DrawSVG), the same as the header logo,
   // instead of a fade + rise.
   drawIcons(shell);
-  // NB: the headline char reveal is deliberately NOT built here. It uses
-  // SplitText, which must measure against the loaded webfont — running it in the
-  // pre-font hero phase splits on fallback metrics, so the wide letter-spacing
-  // shows oversized gaps until the font swaps in and reflows ("snaps back").
-  // It is built in buildDayNightHeroTitle from the fonts-ready phase instead.
+  // NB: the headline char reveal is built in buildDayNightHeroTitle (fonts-ready
+  // phase), not here, so SplitText splits against the real webfont metrics rather
+  // than the fallback. (The "letters expand then snap back" bug was NOT a font
+  // issue — see buildDayNightHeroTitle for the actual cause and fix.)
   if (wordmark) {
     gsap.set(wordmark, { autoAlpha: 0, y: 14 });
     tl.to(wordmark, { autoAlpha: 1, y: 0, duration: DUR.reveal }, 0.5);
   }
 }
 
-// Hero headline char reveal. Split here, after webfonts settle, so SplitText
-// measures the real font and the tracked-out letters never reflow mid-reveal.
-// Still plays immediately (it is above the fold), the host stays hidden via the
-// `data-hero-hide` no-FOUC guard until then.
+// Hero headline char reveal. The headline is heavily letter-spaced (17px/28px),
+// so the chars are split into `display:inline` spans (`inline: true`): inline-block
+// char boxes would re-space the tracking around every box, expanding the line ~25%
+// and snapping it back to the designed width on revert. Inline spans render at the
+// un-split width, so there is no expand/snap. Inline chars can't be transformed, so
+// they fade in (opacity only) while the gentle rise is applied to the whole <h1>
+// host, which is block-level and safe to transform.
 export function buildDayNightHeroTitle(shell: HTMLElement): void {
   const title = one(shell, "[data-anim='hero-title']");
-  if (title) charsReveal(title, { immediate: true, stagger: 0.04 });
+  if (!title) return;
+  charsReveal(title, { immediate: true, stagger: 0.04, inline: true });
+  gsap.from(title, { y: 12, duration: DUR.hero, ease: EASE });
 }
 
 export function buildDayNightScroll(shell: HTMLElement): void {
