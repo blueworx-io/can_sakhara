@@ -40,7 +40,8 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
   const close = useCallback(() => setOpen(false), []);
 
   // Logo self-draw: the stroke draws on (fill faded out), then the fill fades
-  // in, repeating every ~3s. Gated to no-reduced-motion via matchMedia, so
+  // in, with a 5s pause between redraws (3.1s draw + 5s gap). Gated to
+  // no-reduced-motion via matchMedia, so
   // reduced-motion users keep the static filled mark. useGSAP sets the hidden
   // "from" state pre-paint, so the solid logo never flashes before drawing.
   useGSAP(() => {
@@ -48,12 +49,12 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
     if (!path) return;
     const mm = gsap.matchMedia();
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.4 });
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 5 });
       tl.fromTo(
         path,
         { drawSVG: "0%", fillOpacity: 0 },
-        { drawSVG: "100%", duration: 1.4, ease: "power1.inOut" },
-      ).to(path, { fillOpacity: 1, duration: 0.4, ease: "power1.out" }, "-=0.25");
+        { drawSVG: "100%", duration: 4.8, ease: "power1.inOut" },
+      ).to(path, { fillOpacity: 1, duration: 0.8, ease: "power1.out" }, "-=0.5");
       drawTlRef.current = tl;
     });
     return () => {
